@@ -23,6 +23,5 @@ class Context
             default:
                 throw new \LengthException('Key must be 16 or 32 bytes');
         }
-
     }
-} 
+}
