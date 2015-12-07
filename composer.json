@@ -3,7 +3,7 @@
   "homepage": "https://github.com/lt/PHP-ChaCha20",
   "description": "Pure PHP implementations of ChaCha20.",
   "require": {
-    "php": "~5.4"
+    "php": ">5.4"
   },
   "autoload": {
     "psr-4": {
