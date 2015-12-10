@@ -1,9 +1,25 @@
 {
-  "name": "lt/PHP-ChaCha20",
+  "name": "lt/chacha20",
   "homepage": "https://github.com/lt/PHP-ChaCha20",
-  "description": "Pure PHP implementations of ChaCha20.",
+  "description": "Pure PHP implementations of the ChaCha20 encryption algorithm.",
+  "authors": [
+    {
+      "name": "Leigh T",
+      "homepage": "https://github.com/lt"
+    }
+  ],
+  "keywords": [
+    "chacha",
+    "encryption",
+    "cipher",
+    "security"
+  ],
+  "license": "MIT",
   "require": {
-    "php": ">5.4"
+    "php": ">=5.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~5.0"
   },
   "autoload": {
     "psr-4": {
