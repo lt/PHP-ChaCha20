@@ -4,24 +4,19 @@ namespace ChaCha20;
 
 class Context
 {
-    public $rk;
+    public $state;
     public $buffer = '';
 
-    function __construct($key, $iv)
+    function __construct($key, $nonce)
     {
-        if (strlen($iv) !== 8) {
-            throw new \LengthException('IV must be 8 bytes');
+        if (!is_string($key) || strlen($key) !== 32) {
+            throw new \LengthException('Key must be a 256-bit string');
         }
 
-        switch (strlen($key)) {
-            case 32:
-                $this->rk = array_values(unpack('V16', "expand 32-byte k$key\0\0\0\0\0\0\0\0$iv"));
-                break;
-            case 16:
-                $this->rk = array_values(unpack('V16', "expand 16-byte k$key$key\0\0\0\0\0\0\0\0$iv"));
-                break;
-            default:
-                throw new \LengthException('Key must be 16 or 32 bytes');
+        if (!is_string($nonce) || strlen($nonce) !== 12) {
+            throw new \LengthException('Nonce must be a 96-bit string');
         }
+
+        $this->state = array_values(unpack('V16', "expand 32-byte k$key\0\0\0\0$nonce"));
     }
 }
