@@ -42,34 +42,42 @@ $tests = [
 ];
 
 $cipher = new \ChaCha20\Cipher();
+$nullBytes64 = str_repeat("\0", 64);
+
 foreach ($tests as $name => $vectors) {
     print "$name\n";
     foreach ($vectors as $k => $vector) {
         print "  $k: ";
 
-        $key = pack('C*',...$vector[0]);
-        $iv = pack('C*',...$vector[1]);
-        $block0 = pack('C*',...$vector[3]);
-        $block1 = pack('C*',...$vector[4]);
+        $key = pack('C*', ...$vector[0]);
+        $iv = pack('C*', ...$vector[1]);
+        $block0 = pack('C*', ...$vector[3]);
+        $block1 = pack('C*', ...$vector[4]);
 
         $context = new \ChaCha20\Context($key,$iv);
 
         if ($context->rk !== $vector[2]) {
-            var_dump($context->rk,$vector[2]);
+            var_dump($context->rk, $vector[2]);
             throw new Exception('Initial state incorrect');
         }
 
-        $test0 = $cipher->encrypt($context,str_repeat(chr(0),64));
-        $test1 = $cipher->encrypt($context,str_repeat(chr(0),64));
+        $test0 = $cipher->encrypt($context, $nullBytes64);
+        $test1 = $cipher->encrypt($context, $nullBytes64);
+
+        $cipher->setCounter($context, 1);
+
+        $test2 = $cipher->encrypt($context, $nullBytes64);
 
         if ($block0 !== $test0) {
-            var_dump($test0,$block0);
             throw new Exception('First block incorrect');
         }
 
         if ($block1 !== $test1) {
-            var_dump($test1,$block1);
             throw new Exception('Second block incorrect');
+        }
+
+        if ($block1 !== $test2) {
+            throw new Exception('Seeking back to second block failed');
         }
 
         print "passed\n";

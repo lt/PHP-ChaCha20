@@ -139,4 +139,10 @@ class Cipher
     {
         return $this->encrypt($ctx, $message);
     }
+
+    public function setCounter(Context $ctx, $counter)
+    {
+        $ctx->rk[12] = $counter & 0xffffffff;
+        $ctx->rk[13] = ($counter >> 32) & 0xffffffff;
+    }
 }
