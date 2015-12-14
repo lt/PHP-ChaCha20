@@ -48,8 +48,8 @@ class CipherTest extends \PHPUnit_Framework_TestCase
      */
     function testVectors($key, $nonce, $counter, $plaintext, $ciphertext)
     {
-        $ctx = new Context(hex2bin($key), hex2bin($nonce));
         $cipher = new Cipher;
+        $ctx = $cipher->init(hex2bin($key), hex2bin($nonce));
         $cipher->setCounter($ctx, $counter);
 
         $this->assertSame(hex2bin($ciphertext), $cipher->encrypt($ctx, hex2bin($plaintext)));

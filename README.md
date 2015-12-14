@@ -11,8 +11,8 @@ Remember that *a nonce must not be used more than once for a particular key*
 
 ```
 $chacha20 = new ChaCha20\Cipher;
-$encCtx = new ChaCha20\Context($key, $nonce);
-$decCtx = new ChaCha20\Context($key, $nonce);
+$encCtx = $chacha20->init($key, $nonce);
+$decCtx = $chacha20->init($key, $nonce);
 
 $cipherText = $chacha20->encrypt($encCtx, $message);
 $plainText = $chacha20->decrypt($decCtx, $cipherText);
@@ -22,4 +22,4 @@ The `Context` object maintains the current state of the algorithm, so that it ca
 
 The `decrypt` method is an alias of the `encrypt` method, and exists only to indicate intent.
 
-Seek operations can be performed on the keystream by calling the `setCounter` method.
+Seek operations can be performed on the keystream by calling the `setCounter` method, where the count is in 64-byte blocks.

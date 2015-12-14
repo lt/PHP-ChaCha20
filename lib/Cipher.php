@@ -4,6 +4,22 @@ namespace ChaCha20;
 
 class Cipher
 {
+    function init($key, $nonce)
+    {
+        if (!is_string($key) || strlen($key) !== 32) {
+            throw new \LengthException('Key must be a 256-bit string');
+        }
+
+        if (!is_string($nonce) || strlen($nonce) !== 12) {
+            throw new \LengthException('Nonce must be a 96-bit string');
+        }
+
+        $ctx = new Context();
+        $ctx->state = array_values(unpack('V16', "expand 32-byte k$key\0\0\0\0$nonce"));
+
+        return $ctx;
+    }
+
     function encrypt(Context $ctx, $message)
     {
         $state = $ctx->state;
