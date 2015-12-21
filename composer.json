@@ -1,7 +1,7 @@
 {
   "name": "leigh/chacha20",
   "homepage": "https://github.com/lt/PHP-ChaCha20",
-  "description": "Pure PHP implementations of the ChaCha20 encryption algorithm.",
+  "description": "Pure PHP implementation of the ChaCha20 encryption algorithm.",
   "authors": [
     {
       "name": "Leigh T",
@@ -9,7 +9,7 @@
     }
   ],
   "keywords": [
-    "chacha",
+    "stream",
     "encryption",
     "cipher",
     "security"
@@ -24,6 +24,9 @@
   "autoload": {
     "psr-4": {
       "ChaCha20\\": "lib"
-    }
+    },
+    "files": [
+      "lib/functions.php"
+    ]
   }
 }
