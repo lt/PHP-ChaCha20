@@ -3,7 +3,7 @@
 namespace ChaCha20;
 
 if (!extension_loaded('chacha20')) {
-    function encrypt($key, $nonce, $plaintext)
+    function encrypt(string $key, string $nonce, string $plaintext): string
     {
         $cipher = new Cipher();
         $context = $cipher->init($key, $nonce);
@@ -11,7 +11,7 @@ if (!extension_loaded('chacha20')) {
         return $ciphertext;
     }
 
-    function decrypt($key, $nonce, $ciphertext)
+    function decrypt(string $key, string $nonce, string $ciphertext): string
     {
         $cipher = new Cipher();
         $context = $cipher->init($key, $nonce);

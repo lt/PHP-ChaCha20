@@ -1,16 +1,16 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace ChaCha20;
 
 class Cipher
 {
-    function init($key, $nonce)
+    function init(string $key, string $nonce): Context
     {
-        if (!is_string($key) || strlen($key) !== 32) {
+        if (strlen($key) !== 32) {
             throw new \LengthException('Key must be a 256-bit string');
         }
 
-        if (!is_string($nonce) || strlen($nonce) !== 12) {
+        if (strlen($nonce) !== 12) {
             throw new \LengthException('Nonce must be a 96-bit string');
         }
 
@@ -20,7 +20,7 @@ class Cipher
         return $ctx;
     }
 
-    function encrypt(Context $ctx, $message)
+    function encrypt(Context $ctx, string $message): string
     {
         $state = $ctx->state;
 
@@ -151,14 +151,14 @@ class Cipher
         return $out;
     }
 
-    public function decrypt(Context $ctx, $message)
+    public function decrypt(Context $ctx, string $message): string
     {
         return $this->encrypt($ctx, $message);
     }
 
-    public function setCounter(Context $ctx, $counter)
+    public function setCounter(Context $ctx, int $counter)
     {
-        if (!is_int($counter) || $counter < 0 || $counter > 0xffffffff) {
+        if ($counter < 0 || $counter > 0xffffffff) {
             throw new \InvalidArgumentException('Counter must be 32-bit positive integer');
         }
 

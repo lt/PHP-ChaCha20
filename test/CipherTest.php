@@ -46,7 +46,7 @@ class CipherTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider vectors
      */
-    function testVectors($key, $nonce, $counter, $plaintext, $ciphertext)
+    function testVectors(string $key, string $nonce, int $counter, string $plaintext, string $ciphertext)
     {
         $cipher = new Cipher;
         $ctx = $cipher->init(hex2bin($key), hex2bin($nonce));

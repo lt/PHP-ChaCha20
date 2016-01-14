@@ -4,7 +4,7 @@
   "description": "Pure PHP implementation of the ChaCha20 encryption algorithm.",
   "authors": [
     {
-      "name": "Leigh T",
+      "name": "Leigh",
       "homepage": "https://github.com/lt"
     }
   ],
@@ -16,7 +16,7 @@
   ],
   "license": "MIT",
   "require": {
-    "php": ">=5.4"
+    "php": ">=7.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~5.0"
