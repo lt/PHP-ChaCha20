@@ -23,23 +23,12 @@ class Cipher
     function encrypt(Context $ctx, string $message): string
     {
         $state = $ctx->state;
-
-        $messageLen = strlen($message);
         $keyStream = $ctx->buffer;
 
-        if ($keyStream) {
-            $offset = strlen($keyStream);
-            $messageLen -= $offset;
-            $out = $message ^ $keyStream;
-        }
-        else {
-            $offset = 0;
-            $out = '';
-        }
+        $bytesRequired = strlen($message) - strlen($keyStream);
+        $bytesOver = $bytesRequired % 64;
 
-        $messageRemainder = $messageLen % 64;
-        $blocks = ($messageLen >> 6) + ($messageRemainder > 0);
-
+        $blocks = ($bytesRequired >> 6) + ($bytesOver > 0);
         while ($blocks-- > 0) {
             list($s00, $s01, $s02, $s03, $s04, $s05, $s06, $s07, $s08, $s09, $s10, $s11, $s12, $s13, $s14, $s15) = $state;
 
@@ -110,7 +99,7 @@ class Cipher
                                                       & 0xffffffff) <<  7) & 0xffffffff) | $c >> 25;
             }
 
-            $keyStream = pack('V16',
+            $keyStream .= pack('V16',
                 $s00 + $state[ 0],
                 $s01 + $state[ 1],
                 $s02 + $state[ 2],
@@ -129,26 +118,15 @@ class Cipher
                 $s15 + $state[15]
             );
 
-            $out .= substr($message, $offset, 64) ^ $keyStream;
-
-            $state[12] = $state[12] + 1 & 0xffffffff;
-            if (!$state[12]) {
+            if (++$state[12] & 0xf00000000) {
                 throw new \OverflowException('Counter overflowed upper bound');
             }
-
-            $offset += 64;
         }
 
-        if ($messageRemainder) {
-            $ctx->buffer = substr($keyStream, $messageRemainder);
-        }
-        else {
-            $ctx->buffer = '';
-        }
-
+        $ctx->buffer = substr($keyStream, $bytesRequired);
         $ctx->state = $state;
 
-        return $out;
+        return $message ^ $keyStream;
     }
 
     public function decrypt(Context $ctx, string $message): string
